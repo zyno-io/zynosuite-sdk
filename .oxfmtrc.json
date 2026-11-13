@@ -1,0 +1,26 @@
+{
+    "tabWidth": 4,
+    "singleQuote": true,
+    "printWidth": 150,
+    "arrowParens": "avoid",
+    "trailingComma": "none",
+    "ignorePatterns": [
+        "docs/api/**",
+        "src/generated/**",
+        "examples/zyno.generated.ts",
+        "dist/**",
+        ".yarn/**",
+        ".working/**",
+        "docs/.vitepress/cache/**",
+        "docs/.vitepress/dist/**",
+        "openapi.suite.json"
+    ],
+    "overrides": [
+        {
+            "files": ["*.yml", "*.yaml"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
+}

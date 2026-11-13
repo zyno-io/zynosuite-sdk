@@ -1,0 +1,74 @@
+{
+    "name": "@zyno-io/zynosuite-sdk",
+    "version": "0.1.0",
+    "description": "Framework-neutral TypeScript SDK for ZynoSuite CMS applications",
+    "homepage": "https://zyno-io.github.io/zynosuite-sdk/",
+    "bugs": {
+        "url": "https://github.com/zyno-io/zynosuite-sdk/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Zyno Consulting",
+        "email": "support@zyno.io",
+        "url": "https://zyno.io"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zyno-io/zynosuite-sdk.git"
+    },
+    "bin": {
+        "zynosuite-models": "./scripts/generate-models.mjs"
+    },
+    "workspaces": [
+        "tools/docs"
+    ],
+    "files": [
+        "dist",
+        "scripts/generate-models.mjs",
+        "README.md",
+        "LICENSE"
+    ],
+    "type": "module",
+    "sideEffects": false,
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "typecheck": "tsc -p tsconfig.json --noEmit",
+        "test": "yarn build && node --test tests/*.test.mjs",
+        "examples:check": "yarn build && node scripts/check-examples.mjs",
+        "openapi:generate": "node scripts/generate-openapi.mjs",
+        "models:generate": "node scripts/generate-models.mjs",
+        "docs:api": "yarn workspace @zyno-io/zynosuite-sdk-docs api",
+        "docs:build": "yarn docs:api && yarn workspace @zyno-io/zynosuite-sdk-docs build",
+        "docs:dev": "yarn docs:api && yarn workspace @zyno-io/zynosuite-sdk-docs dev",
+        "check": "yarn typecheck && yarn test && yarn generated:check && yarn examples:check && yarn docs:build && yarn docs:check && yarn verify-package",
+        "docs:check": "node scripts/check-docs.mjs README.md RELEASING.md",
+        "generated:check": "yarn openapi:generate --complete && git diff --exit-code -- openapi.suite.json src/generated",
+        "verify-package": "node scripts/verify-package.mjs",
+        "prepack": "yarn build && yarn verify-package",
+        "format": "oxfmt .",
+        "format:check": "oxfmt --check .",
+        "lint": "oxlint src scripts tests examples"
+    },
+    "dependencies": {
+        "@noble/hashes": "^2.4.0"
+    },
+    "devDependencies": {
+        "oxfmt": "^0.68.0",
+        "oxlint": "^1.83.0",
+        "typescript": "^7.0.2",
+        "yaml": "^2.9.1"
+    },
+    "packageManager": "yarn@4.18.1"
+}
