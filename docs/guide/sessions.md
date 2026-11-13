@@ -1,39 +1,133 @@
-# Persistent sessions and logout
+# Login and logout
 
-CRM is the authentication authority. The SDK persists only fully authenticated, unrestricted app grants. An authenticated grant with `expiresAt: null` has no local timeout: restarting an app does not end it. Server deletion or invalidation remains authoritative. Recovery, enrollment and other proof sessions stay volatile and honor their finite expiry.
+Users sign in as contacts in the ZynoSuite CRM. The CRM decides whether the email and password are right. Whether that contact may use your app is a separate permission your administrator controls. The SDK handles both checks and saves the login on the device. You build the screens.
 
-Use the asynchronous browser persistent store for restart persistence. It requires atomic Web Locks coordination and cross-tab notifications; unavailable coordination produces an explicit storage error instead of silently advertising persistent login. Native applications provide an atomic store with the same contract. Session records are isolated by API origin, app, publishable-key fingerprint and registered origin.
+## Saved logins
 
-Call `auth.restore()` when the application starts. `auth.signIn({ email, password })` persists an unrestricted CRM grant and validates app authorization. Changing users requires explicit logout first; `ALREADY_AUTHENTICATED` prevents an accidental account switch. After a grant is saved, a transient app-authorization failure resolves sign-in with the session and leaves the state `unverified`; check the state before showing authenticated app content and retry restore when connectivity returns. Authoritative authentication, access or configuration failures still reject.
+A successful sign-in is saved and has no time limit on the device. Closing the tab or restarting the app does not end it. It ends when the user logs out, or when the server ends it, for example after a password change or when an administrator revokes it.
 
-Read `auth.state` for the current snapshot and use `auth.subscribe()` for changes. The returned function removes the listener:
+A dropped connection, a rate limit, an access problem or a wrong app setting never deletes a saved login.
+
+In a browser the login is kept in the browser's storage, in step across tabs, separately for each app, key and site address. Native apps supply their own storage; see [Browser, native and server](runtimes.md).
+
+## At startup
+
+Call `auth.restore()` once when the app starts. It checks the saved login with the server and updates `auth.state`. Use `auth.subscribe()` to hear about changes.
 
 ```ts
-renderAuth(client.auth.state);
-const unsubscribe = client.auth.subscribe(state => renderAuth(state));
-await client.auth.restore();
-// On application teardown:
-unsubscribe();
+import type { AuthState } from '@zyno-io/zynosuite-sdk';
+import { client } from './zyno.js';
+
+function render(state: AuthState): void {
+    if (state.status === 'authenticated') {
+        console.log(`Signed in as ${state.me.contact.displayName ?? 'member'}`);
+    } else {
+        console.log(`Login state: ${state.status}`);
+    }
+}
+
+render(client.auth.state);
+const unsubscribe = client.auth.subscribe(render);
+
+client.auth.restore().catch(() => {
+    // Offline or a temporary server problem. The saved login is kept.
+});
 ```
 
-| State                 | Meaning and application response                                                                               |
-| --------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `signed-out`          | No active login is available; offer sign-in                                                                    |
-| `unverified`          | This client has not validated app authorization; restore on startup, focus or connectivity recovery            |
-| `authenticated`       | CRM session and app authorization were validated; authenticated content can be requested                       |
-| `denied`              | Retain the CRM credential, show the access denial, and restore after permission changes                        |
-| `configuration-error` | Retain the credential; correct app/key/origin configuration before restoring                                   |
-| `storage-unavailable` | Safe persistent storage is unavailable; public content works, while authentication needs an atomic store       |
-| `pending-revocation`  | Local logout has taken effect; resolve or explicitly forget the pending server revocation before another login |
+Call `unsubscribe()` when the screen goes away.
 
-Subscribers should update UI state. Do not start an unbounded restore loop from every `unverified` notification; use a bounded application lifecycle or connectivity action. Store changes from another client invalidate cached authorization and require validation before authenticated content is shown.
+**Show signed-in UI only when the status is `authenticated`.** A saved login that has not been checked yet is not proof of anything.
 
-Network failure, rate limiting and application access denial preserve the credential. Only the stable `REAUTHENTICATION_REQUIRED` response for the exact credential sent by a request, or explicit logout, clears that active credential. A failed password attempt returning `INVALID_CREDENTIALS` does not clear an existing login.
+## Login states
 
-Logout clears active UI state immediately and attempts server revocation. If the request fails, the secret remains only in one protected pending-revocation slot; it cannot restore an active login. Public content stays available. New persistent login is blocked until the pending capability is revoked or explicitly forgotten. Call `auth.retryPendingLogout()` when connectivity returns. `auth.forgetPendingLogout()` explicitly discards the local capability while leaving server revocation unconfirmed. It can also discard a corrupt stored record that cannot be decoded; prefer recovering storage first, since an unreadable capability cannot be revoked by the client.
+- `signed-out`: no saved login. Offer sign-in.
+- `unverified`: there may be a saved login, but it has not been checked. Show a neutral or loading state and call `restore()`.
+- `authenticated`: the login is checked and the user may use this app. `state.me` has the contact.
+- `denied`: the login is fine, but this contact may not use the app. Say so. The login is kept; call `restore()` after the administrator fixes access.
+- `configuration-error`: the app key, publishable key or site address is not accepted. The login is kept; fix the settings, then call `restore()`.
+- `storage-unavailable`: the device cannot save a login safely. Keep showing public content and hide sign-in.
+- `pending-revocation`: the user logged out here, but the server has not confirmed it. Show signed-out UI and finish the logout (below) before a new sign-in.
 
-A successful `auth.replacePassword()` revokes the calling server session and leaves this client signed out. Sign in again using the new password.
+The state returns to `unverified` when another tab or app instance changes the saved login. Call `restore()` at sensible moments: at startup, when the app returns to the foreground and when the network comes back. Do not call it in a loop whenever you see `unverified`; if the network is down, that loop never ends.
 
-Never log grant secrets, place them in URLs, or copy them into analytics. Applications should display safe error codes and messages rather than transport headers or stored authentication records.
+## Sign in
 
-If storing a new grant fails, `SESSION_PERSISTENCE_FAILED` reports the problem and the SDK attempts server revocation. If both storage and the server are unavailable, one pending credential can remain in memory for revocation retry. Persistence across a restart cannot be promised when the persistent store itself failed.
+```ts
+await client.auth.signIn({ email, password });
+```
+
+- Wrong details throw `INVALID_CREDENTIALS`.
+- If someone is already signed in, `signIn` throws `ALREADY_AUTHENTICATED`. To switch users, log out first.
+- `signIn` can succeed and leave the state `unverified`. The login was accepted and saved, but the follow-up check of the user's profile and app access hit a network problem. Call `restore()` when the connection is back; do not ask for the password again.
+
+So after `signIn` returns, read `auth.state` (or wait for your `subscribe` callback) before showing signed-in UI.
+
+`client.me()` returns the signed-in contact's ID and name.
+
+## Other flows
+
+`auth.configuration()` reports which options the administrator has enabled (`policy.options`) and the password rules (`passwordRequirements`).
+
+Two flows end with the user signed in and the login saved, exactly like `signIn`:
+
+- **Email code login.** `challenge({ purpose: 'login', email })`, then `verify(...)` with the code.
+- **Create an account.** `challenge({ purpose: 'register', email })`, `verify(...)`, then `register(...)`.
+
+The others do not sign the user in. When they finish, send the user to your sign-in form:
+
+- **Forgot password.** `recover({ email })` sends an email with a link.
+- **Link from a recovery email.** `exchange({ token, purpose: 'recovery' })`, then `replacePassword({ newPassword })`.
+- **Link from an invitation.** `exchange({ token, purpose: 'enrollment' })`, then `completeEnrollment({ password })`.
+- **Link confirming a new login email.** `exchange({ token, purpose: 'login-email' })`, then `completeLoginEmail()`.
+
+The in-between steps (a code that was sent, a link that was opened) are short-lived and kept in memory only. If the user takes too long or reloads the page, the next step fails. The code is not always the same (`PROOF_SESSION_EXPIRED` or `AUTHENTICATION_REQUIRED`, for example), so treat any failure here as "start this flow again".
+
+`replacePassword` also changes the password of a signed-in user. A successful change ends that login and the state becomes `signed-out`; sign in again with the new password.
+
+## Log out
+
+```ts
+export async function signOut(): Promise<void> {
+    try {
+        await client.auth.logout();
+    } catch {
+        // The app already shows the user as signed out.
+        // The server could not be told; see below.
+    }
+}
+```
+
+Logging out hides the signed-in state on this device immediately, then asks the server to end the login.
+
+If the server cannot be reached, the state stays `pending-revocation`. The SDK keeps what it needs to tell the server later; that cannot be used to sign back in. Meanwhile public content still works, and a new sign-in is refused with `PENDING_REVOCATION`.
+
+You have two ways to finish:
+
+```ts
+// Try the server again, for example when the network returns.
+window.addEventListener('online', () => {
+    if (client.auth.state.status === 'pending-revocation') {
+        client.auth.retryPendingLogout().catch(() => {});
+    }
+});
+
+// Or give up on telling the server.
+await client.auth.forgetPendingLogout();
+```
+
+Prefer retrying. `forgetPendingLogout()` clears this device so the user can sign in again, but it cannot confirm that the server ended the old login. Use it when the user asks for it, or when the saved record is damaged (`SESSION_STORAGE_CORRUPT`) and cannot be read.
+
+## When storage fails
+
+If the device cannot save a new login, `signIn` throws `SESSION_PERSISTENCE_FAILED` and the SDK asks the server to end the login it just created. Check `auth.state` afterwards:
+
+- `storage-unavailable`: the server ended the new login. Sign-in can be tried again once storage works.
+- `pending-revocation`: the server could not be reached either. Finish the logout as above before another sign-in.
+
+On a device whose storage is failing, the SDK may only be able to remember an unfinished logout in memory, so it can be lost on restart.
+
+## Next
+
+- [Errors and retries](errors.md): the codes behind these states, and what is safe to log.
+- [Browser, native and server](runtimes.md): storage for native apps.
+- [Saved user data](owned.md): what a signed-in user can do.

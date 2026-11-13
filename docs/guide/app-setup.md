@@ -1,21 +1,52 @@
 # App setup
 
-An administrator creates an SDK app and approves its access policies. App configuration and schema export happen through staff tooling, outside the application bundle.
+Before your code can read anything, a ZynoSuite administrator registers your app and decides what it may access.
 
-Public content requires an exact publishable-key ID/origin binding on the app, an eligible standalone root type, and an explicit public field allowlist. Public access starts disabled. Only unowned, non-system root types qualify. An approved component includes its entire nested subtree; opaque JSON cannot be public.
+## What the administrator gives you
 
-The administrator pins approval to the active definition. A later definition change pauses public delivery until reapproval. Media rendition profiles require separate approval. An empty field allowlist exposes only permitted publication metadata.
+- **App key.** The name of your app in ZynoSuite, such as `example-app`.
+- **Publishable key.** A key tied to your app and to the web addresses allowed to use it.
+- **Schema file.** A JSON list of the content types and fields your app may use.
+- **Registered site.** Your site's exact origin, such as `https://www.example.com`, added to the app.
 
-Member content and owned records require a CRM-backed app authorization policy and their separate content policies. Public content does not require a CRM session. An app policy grants access to a tenant-owned type; it does not transfer ownership of that type to the app.
+None of these is a secret. They ship inside your app, where anyone can read them. They tell ZynoSuite which app is calling; they do not prove who the user is, and they do not keep content private.
 
-Before adopting v1 owned writes on an existing app, an administrator sets `legacyMutationsEnabled: false`. New apps already use this setting. The server rejects v1 writes while legacy mutations remain enabled, preventing older clients from bypassing revision checks. Plan that cutover with any installed legacy clients.
+Never put staff logins, staff tokens or secret keys in your app. The SDK does not need them.
 
-Export the sanitized schema manifest through the staff endpoint `GET /sdk/apps/:appId/schema-manifest`, then save it as a development artifact. Generate models locally:
+## What the administrator turns on
+
+Access is off until someone approves it. There are three kinds:
+
+- **Public.** Anyone on the internet can read it. The administrator approves each type and each field within it.
+- **Members-only.** Signed-in CRM contacts can read it. Needs a login policy for the app, plus the types members may read.
+- **User-owned.** Only the signed-in user can read and save it. Needs a login policy, plus the types users may save.
+
+Worth knowing when you talk to them:
+
+- **Public means world-readable.** Tying the key to your site's address stops other websites from calling the API in a browser. It does not stop someone from copying approved content.
+- **Approval is tied to the type's current shape.** If a public type's fields change later, public delivery of that type can stop until the administrator approves it again.
+- **Media is approved separately.** Each image or video size your app may display publicly needs its own approval. See [Media](media.md).
+- **Login belongs to the CRM.** Users sign in as CRM contacts. Whether a contact may use your app is a separate permission.
+- **Older apps need one switch for saving.** If your app existed before this SDK, the administrator must turn off its older write method (`legacyMutationsEnabled: false`). Until then, saves fail with `LEGACY_MUTATIONS_ENABLED`. Plan the switch around older app versions still in use.
+
+## Get the schema file and generate types
+
+The administrator exports the schema file with staff tooling (the staff endpoint `GET /sdk/apps/:appId/schema-manifest`) and sends it to you. Save it as `app-schema.json`. It lists only the fields your app is approved to use, and it grants no access by itself; the server checks every request.
 
 ```bash
-node node_modules/@zyno-io/zynosuite-sdk/scripts/generate-models.mjs app-schema.json src/zyno.generated.ts
+npx zynosuite-models app-schema.json src/zyno.generated.ts
 ```
 
-Review generated alias and schema changes in source control. The manifest is a developer contract, not an authorization capability. It excludes defaults, condition expressions and fields outside the app's approved audience views. Do not place staff JWTs, secret keys or raw administrative schema exports in browser code.
+`zynosuite-models` is installed with the SDK. The output path defaults to `zyno.generated.ts` in the current folder.
 
-Use a publishable key in the application. It is public configuration, not proof of a human or a secret client. Public policy means world-readable; CORS does not prevent scraping. Native applications configure an exact registered HTTPS origin.
+Commit both files. When the schema changes, ask for a new export, rerun the command and review the diff. [Typed schemas](schemas.md) explains the generated file.
+
+## Create the client
+
+Pass the two keys and the generated `schema` to `createClient`, as in the [Quickstart](quickstart.md). In a browser the SDK uses the page's real address, so it must match the registered site exactly. Native apps and servers pass the registered address themselves; see [Browser, native and server](runtimes.md).
+
+If the app key, publishable key or address does not match what is registered, requests fail with `INVALID_APP_CONTEXT`. The error does not say which of the three was wrong; check them all with your administrator.
+
+## Next
+
+- [Reading content](content.md) for public and members-only reads.

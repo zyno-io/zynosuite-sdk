@@ -1,10 +1,13 @@
-# Package and documentation releases
+# Releasing the package and documentation
 
-The source of truth is [zyno-io/zynosuite-sdk](https://github.com/zyno-io/zynosuite-sdk). Suite owns the HTTP API; this repository owns the public npm package, its versioned contract snapshot, guides, and documentation build.
+This page is for maintainers of [zyno-io/zynosuite-sdk](https://github.com/zyno-io/zynosuite-sdk). ZynoSuite's backend owns the HTTP API. This repository owns the npm package, a versioned snapshot of that API, the guides and the documentation build.
 
-## Validate a change
+## Check a change
+
+Use Node 26. It does not bundle Corepack, so install it first.
 
 ```bash
+npm install --global corepack
 corepack enable
 yarn install --immutable
 yarn check
@@ -12,26 +15,69 @@ yarn lint
 yarn format:check
 ```
 
-`yarn check` verifies types, runtime/contract tests, reproducible generated contracts, the actual installed model-generator command, packed consumer examples, browser dependency boundaries, package contents, and the documentation build. Generated API Markdown and the built VitePress site are ignored outputs, produced from a clean checkout during checks and documentation deployment. Only authored guides and generator code are committed.
+`yarn check` runs, in order: the type check, the tests, a check that generated API code is up to date, the example checks against the packed package, the documentation build, the documentation link check and package verification.
 
-For a contract update, export Suite OpenAPI and regenerate the complete reviewed operation graph:
+Nothing here needs a backend checkout, a private registry or staff credentials.
+
+## Update the API snapshot
+
+Do this only after a server API change has been approved. Export the OpenAPI file from Suite, then regenerate:
 
 ```bash
 yarn openapi:generate /path/to/suite/openapi.yaml --complete
 ```
 
-Review `openapi.suite.json` and `src/generated/` together. No sibling checkout, private registry, staff credential, or Suite build is needed for ordinary SDK development or CI.
+This rewrites `openapi.suite.json` and `src/generated/`. Review and commit them together. Never edit generated files by hand.
+
+## What is committed
+
+- Committed: the guides in `docs/guide/`, `docs/index.md` and the generator scripts.
+- Not committed: `docs/api/` (the API reference) and `docs/.vitepress/dist/` (the built site). `yarn docs:build` creates both, and both are git-ignored.
 
 ## One-time repository setup
 
 1. Set GitHub Pages to deploy from GitHub Actions.
-2. Create the GitHub Actions environment `release`, with reviewers if release approval is required.
-3. Configure npm trusted publishing for `@zyno-io/zynosuite-sdk`, repository `zyno-io/zynosuite-sdk`, workflow `package.yml`, environment `release`. The initial npm publication may require an owner bootstrap before a trusted publisher can be configured. Do not commit or add a long-lived npm token to the workflow.
+2. Create a GitHub Actions environment named `release`. Add required reviewers if a release should need approval.
+3. On npm, configure trusted publishing for `@zyno-io/zynosuite-sdk` with repository `zyno-io/zynosuite-sdk`, workflow `package.yml` and environment `release`.
 
-## Publish an approved version
+A package's very first publication may need an npm owner to create it before a trusted publisher can be attached. Do not add a long-lived npm token to the repository or the workflow.
 
-Confirm the target Suite API provides the corresponding `/sdk/v1` contracts before the initial SDK release.
+## Publish a version
 
-Update `package.json` in a reviewed pull request. After that commit is merged to `main`, create its matching `v<version>` tag only when Sean approves the release. The tag workflow verifies the tag/version and main-branch ancestry, repeats checks, publishes the tested archive through npm OIDC, and attaches it to a GitHub release. Existing npm versions are immutable; a retry skips an already published version.
+A release happens only from a version tag, and only when Sean approves it.
 
-Documentation is built from `main` and deployed by the separate Pages workflow. It generates `docs/api/` before building and uploads `docs/.vitepress/dist`. The site uses `/zynosuite-sdk/` as its base and is served at [zyno-io.github.io/zynosuite-sdk](https://zyno-io.github.io/zynosuite-sdk/). Manual dispatch is available for documentation recovery.
+1. Confirm that the target Suite API serves the `/sdk/v1` endpoints this version calls.
+2. Change `version` in `package.json` in a pull request. Get it reviewed and merged to `main`.
+3. With approval, tag that merge commit `v` plus the version (for example `v1.2.3`) and push the tag.
+
+The tag starts the `package.yml` workflow, which:
+
+1. checks that the tag matches `package.json` and that the commit is on `main`
+2. runs the full checks again and scans dependencies
+3. packs the package once
+4. publishes that exact archive to npm through trusted publishing (no stored token)
+5. attaches the same archive to a GitHub release
+
+A published npm version cannot be changed. If the workflow runs again for a version already on npm, it skips the publish step and still attaches the archive to the GitHub release. To fix a bad release, publish a new version.
+
+To hand someone an unreleased build, run this in the SDK checkout and send them the archive:
+
+```bash
+yarn pack --out zynosuite-sdk.tgz
+```
+
+They run this in their own app, not in an SDK checkout:
+
+```bash
+npm install /path/to/zynosuite-sdk.tgz
+```
+
+## Deploy the documentation
+
+Documentation is separate from the npm release. The `docs.yml` workflow runs on every push to `main`:
+
+1. generates `docs/api/` from the package source
+2. builds the VitePress site
+3. uploads `docs/.vitepress/dist` to GitHub Pages
+
+The site's address is [zyno-io.github.io/zynosuite-sdk](https://zyno-io.github.io/zynosuite-sdk/), with the base path `/zynosuite-sdk/`. To rebuild it without a new commit, run the workflow manually from the Actions tab.
