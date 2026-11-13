@@ -4,8 +4,9 @@ This page builds one small browser page that reads a public article, signs a use
 
 You need:
 
-- A browser project that compiles TypeScript modules, with an `index.html` and a `src` folder. A new Vite "vanilla TypeScript" project is enough. No framework is needed.
-- From your ZynoSuite administrator: your **app key**, your **publishable key**, the schema file saved as `app-schema.json`, and confirmation that your site's address (including the one you develop on) is registered for the app. [App setup](app-setup.md) explains each item.
+- A browser project that compiles TypeScript modules, with an `index.html` and a `src` folder. A new Vite "vanilla TypeScript" project has the right shape. No framework is needed.
+- An HTTPS address to serve the page from, registered for your app. The ZynoSuite API accepts browser requests only from a registered HTTPS origin, so Vite's default `http://localhost` server fails with `INVALID_ORIGIN`. Develop on HTTPS, at a development URL your administrator has approved and registered.
+- From your ZynoSuite administrator: your **app key**, your **publishable key**, the schema file saved as `app-schema.json`, and which environment they set the app up in (production or alpha). [App setup](app-setup.md) explains each item.
 
 The examples use the sample schema in this repository (`examples/app-schema.json`): a public `article` type with `title` and `body`, and a per-user `favorite` type with `name` and `state`. Your own names will differ.
 
@@ -47,9 +48,12 @@ export const client = createClient({
     appKey: 'example-app',
     publishableKey: 'example-publishable-key',
     runtime: 'browser',
+    environment: 'production',
     schema
 });
 ```
+
+`environment` defaults to `'production'`. If your administrator set the app up in alpha, use `environment: 'alpha'`; the keys and the registered address belong to one environment and do not work in the other.
 
 The rest of the code goes in `src/main.ts`, in order.
 

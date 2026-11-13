@@ -10,7 +10,7 @@ If you leave `runtime` out, the SDK picks `'browser'` when it finds a browser pa
 
 ## Browser
 
-The browser attaches the page's real address to every request, and that address must be the one registered for your app. You cannot override it.
+The browser attaches the page's real address to every request, and that address must be the one registered for your app. You cannot override it. The registered address is always an HTTPS origin, in production and in alpha, so a page served from plain `http://localhost` fails with `INVALID_ORIGIN`. Develop on an HTTPS URL your administrator has registered.
 
 Logins are saved in the browser's local storage, and the SDK uses the browser's Web Locks feature so that several tabs cannot overwrite each other's changes. If either is missing or blocked, as in some private modes and older browsers, public content still works. The login state is `storage-unavailable` and sign-in throws `SESSION_STORAGE_UNAVAILABLE`. The SDK does not fall back to something less safe.
 

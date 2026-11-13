@@ -8,6 +8,9 @@ Before your code can read anything, a ZynoSuite administrator registers your app
 - **Publishable key.** A key tied to your app and to the web addresses allowed to use it.
 - **Schema file.** A JSON list of the content types and fields your app may use.
 - **Registered site.** Your site's exact origin, such as `https://www.example.com`, added to the app.
+- **Environment.** Whether the app was set up in production or alpha. Ask which; the keys and registered site work only in that one.
+
+An origin is the scheme, host and port of an address, with no path: `https://www.example.com`, or `https://dev.example.com:5173`. It must be HTTPS, in production and in alpha alike. `https://example.com` and `https://www.example.com` are different origins, and so are two ports on the same host. The address you develop on counts too: plain `http://localhost` is rejected with `INVALID_ORIGIN`, so ask your administrator to register an HTTPS development URL.
 
 None of these is a secret. They ship inside your app, where anyone can read them. They tell ZynoSuite which app is calling; they do not prove who the user is, and they do not keep content private.
 
@@ -43,7 +46,7 @@ Commit both files. When the schema changes, ask for a new export, rerun the comm
 
 ## Create the client
 
-Pass the two keys and the generated `schema` to `createClient`, as in the [Quickstart](quickstart.md). In a browser the SDK uses the page's real address, so it must match the registered site exactly. Native apps and servers pass the registered address themselves; see [Browser, native and server](runtimes.md).
+Pass the two keys and the generated `schema` to `createClient`, as in the [Quickstart](quickstart.md). The client calls the production API unless you pass `environment: 'alpha'`, so set that if your app was configured in alpha. In a browser the SDK uses the page's real address, so the page must be served from the registered HTTPS origin exactly. Native apps and servers pass the registered address themselves; see [Browser, native and server](runtimes.md).
 
 If the app key, publishable key or address does not match what is registered, requests fail with `INVALID_APP_CONTEXT`. The error does not say which of the three was wrong; check them all with your administrator.
 
