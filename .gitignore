@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.yarn/
+.pnp.*
+.working/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+docs/api/
+*.tgz
+package/
+.DS_Store

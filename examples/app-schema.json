@@ -1,0 +1,38 @@
+{
+    "formatVersion": 1,
+    "appId": "example-app",
+    "schemaDigest": "example-manifest-digest",
+    "views": {
+        "public": {
+            "article": {
+                "key": "article",
+                "typeId": "example-article-type",
+                "definitionId": "example-article-definition",
+                "schemaDigest": "example-article-digest",
+                "fields": [
+                    { "id": "article-title-id", "alias": "title", "type": "text" },
+                    { "id": "article-body-id", "alias": "body", "type": "text", "optional": true }
+                ]
+            }
+        },
+        "member": {},
+        "owned": {
+            "favorite": {
+                "key": "favorite",
+                "typeId": "example-favorite-type",
+                "definitionId": "example-favorite-definition",
+                "schemaDigest": "example-favorite-digest",
+                "fields": [
+                    { "id": "favorite-name-id", "alias": "name", "type": "text" },
+                    {
+                        "id": "favorite-state-id",
+                        "alias": "state",
+                        "type": "enum",
+                        "options": [{ "value": "active" }, { "value": "archived" }],
+                        "optional": true
+                    }
+                ]
+            }
+        }
+    }
+}

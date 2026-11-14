@@ -1,0 +1,14 @@
+{
+    "name": "@zyno-io/zynosuite-sdk-docs",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "api": "node ../../scripts/generate-api-docs.mjs",
+        "build": "vitepress build ../../docs",
+        "dev": "vitepress dev ../../docs"
+    },
+    "devDependencies": {
+        "typescript": "^6.0.2",
+        "vitepress": "^2.0.0-alpha.21"
+    }
+}

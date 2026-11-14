@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import { access, readFile } from 'node:fs/promises';
+import { constants } from 'node:fs';
+
+const root = new URL('../', import.meta.url);
+const source = await readFile(new URL('package.json', root), 'utf8');
+const pkg = JSON.parse(source);
+assert.equal(pkg.name, '@zyno-io/zynosuite-sdk');
+assert.equal(pkg.license, 'MIT');
+assert.equal(pkg.repository.url, 'git+https://github.com/zyno-io/zynosuite-sdk.git');
+assert.equal(pkg.publishConfig.access, 'public');
+assert.equal(pkg.publishConfig.registry, 'https://registry.npmjs.org/');
+assert.deepEqual(pkg.exports['.'], { types: './dist/index.d.ts', import: './dist/index.js' });
+assert.deepEqual(pkg.files, ['dist', 'scripts/generate-models.mjs', 'README.md', 'LICENSE']);
+assert.deepEqual(Object.keys(pkg.dependencies), ['@noble/hashes']);
+for (const path of ['dist/index.js', 'dist/index.d.ts', 'README.md', 'LICENSE']) await access(new URL(path, root), constants.R_OK);
+const bin = new URL(pkg.bin['zynosuite-models'], root);
+await access(bin, constants.R_OK | constants.X_OK);
+const executable = await readFile(bin, 'utf8');
+assert.ok(executable.startsWith('#!/usr/bin/env node\n'));
+console.log('Verified standalone public package metadata, browser entry points, and model-generator executable.');

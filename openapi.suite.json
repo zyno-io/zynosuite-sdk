@@ -1,0 +1,2991 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ZynoSuite public SDK protocol",
+    "version": "1"
+  },
+  "paths": {
+    "/sdk/auth/configuration": {
+      "get": {
+        "operationId": "getSdkPublicAuthConfiguration",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthConfiguration"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/auth/sessions": {
+      "post": {
+        "operationId": "postSdkPublicAuthInitialize",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkCustomerSessionGrant"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionInitInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/sessions/current": {
+      "get": {
+        "operationId": "getSdkPublicAuthCurrent",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkCustomerSession"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/auth/password": {
+      "post": {
+        "operationId": "postSdkPublicAuthPassword",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkCustomerSessionGrant"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordLoginInput"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "putSdkPublicAuthReplacePassword",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/challenges": {
+      "post": {
+        "operationId": "postSdkPublicAuthChallenge",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerAuthChallengeResult"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChallengeInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/challenges/verify": {
+      "post": {
+        "operationId": "postSdkPublicAuthVerify",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkChallengeVerification"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChallengeVerifyInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/registration/complete": {
+      "post": {
+        "operationId": "postSdkPublicAuthRegister",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkCustomerSessionGrant"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/password-recovery": {
+      "post": {
+        "operationId": "postSdkPublicAuthRecover",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "accepted"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecoveryInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/exchange": {
+      "post": {
+        "operationId": "postSdkPublicAuthExchange",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkCustomerSessionGrant"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExchangeInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/enrollment/complete": {
+      "post": {
+        "operationId": "postSdkPublicAuthEnroll",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvitationInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/auth/login-email/complete": {
+      "put": {
+        "operationId": "putSdkPublicAuthLoginEmail",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/auth/logout": {
+      "post": {
+        "operationId": "postSdkPublicAuthLogout",
+        "tags": [
+          "sdkPublicAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/me": {
+      "get": {
+        "operationId": "getSdkMe",
+        "tags": [
+          "sdk"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkMeResult"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/cms/uploads": {
+      "post": {
+        "operationId": "postSdkMediaCreateUpload",
+        "tags": [
+          "sdkMedia"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICmsUploadCreateResult"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ISdkUploadRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/cms/uploads/{uploadId}/commit": {
+      "post": {
+        "operationId": "postSdkMediaCommit",
+        "tags": [
+          "sdkMedia"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    }
+                  },
+                  "required": [
+                    "ok"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uploadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/cms/media/{uploadId}/url": {
+      "get": {
+        "operationId": "getSdkMediaUrl",
+        "tags": [
+          "sdkMedia"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICmsMediaUrlResult"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uploadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "imageVariant",
+                "thumbnail",
+                "poster",
+                "video"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "profile",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/public/content/{key}": {
+      "get": {
+        "operationId": "getSdkPublicBrowseV1List",
+        "tags": [
+          "sdkPublicBrowseV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1List"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/public/content/{key}/by-slug/{slug}": {
+      "get": {
+        "operationId": "getSdkPublicBrowseV1Slug",
+        "tags": [
+          "sdkPublicBrowseV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Entry"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/public/content/{key}/{id}": {
+      "get": {
+        "operationId": "getSdkPublicBrowseV1Get",
+        "tags": [
+          "sdkPublicBrowseV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Entry"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/public/content/{key}/{entryId}/media": {
+      "get": {
+        "operationId": "getSdkPublicMediaV1Resolve",
+        "tags": [
+          "sdkPublicMediaV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkPublicMediaV1Result"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "uploadIds",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "imageVariant",
+                "thumbnail",
+                "video",
+                "poster"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "profile",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/member/content/{key}": {
+      "get": {
+        "operationId": "getSdkMemberBrowseV1List",
+        "tags": [
+          "sdkMemberBrowseV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1List"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "populate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/member/content/{key}/by-slug/{slug}": {
+      "get": {
+        "operationId": "getSdkMemberBrowseV1Slug",
+        "tags": [
+          "sdkMemberBrowseV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Entry"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/member/content/{key}/{id}": {
+      "get": {
+        "operationId": "getSdkMemberBrowseV1Get",
+        "tags": [
+          "sdkMemberBrowseV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Entry"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/owned/{key}": {
+      "get": {
+        "operationId": "getSdkOwnedV1Sync",
+        "tags": [
+          "sdkOwnedV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Sync"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "contextVersion",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "postSdkOwnedV1Create",
+        "tags": [
+          "sdkOwnedV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Entry"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ISdkOwnedV1Create"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sdk/v1/owned/{key}/{id}": {
+      "get": {
+        "operationId": "getSdkOwnedV1Get",
+        "tags": [
+          "sdkOwnedV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Entry"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "put": {
+        "operationId": "putSdkOwnedV1Replace",
+        "tags": [
+          "sdkOwnedV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISdkV1Entry"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ISdkOwnedV1Replace"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSdkOwnedV1Remove",
+        "tags": [
+          "sdkOwnedV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "expectedWriteRevision",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/sdk/v1/owned/{key}/{id}/children/{childKey}/batch": {
+      "post": {
+        "operationId": "postSdkOwnedV1Batch",
+        "tags": [
+          "sdkOwnedV1"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ISdkV1Entry"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-zs-sdk-app-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-publishable-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-zs-customer-session",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "childKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rows": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/Record"
+                        }
+                      },
+                      "required": [
+                        "data"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "rows"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomerAuthConfiguration": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CustomerAuthPolicySnapshot"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "passwordRequirements": {
+            "type": "object",
+            "properties": {
+              "minimumLength": {
+                "type": "number"
+              },
+              "maximumLength": {
+                "type": "number",
+                "enum": [
+                  128
+                ]
+              },
+              "minimumCharacterClasses": {
+                "type": "number",
+                "enum": [
+                  3
+                ]
+              }
+            },
+            "required": [
+              "minimumLength",
+              "maximumLength",
+              "minimumCharacterClasses"
+            ]
+          }
+        },
+        "required": [
+          "enabled",
+          "policy",
+          "passwordRequirements"
+        ]
+      },
+      "ISdkCustomerSessionGrant": {
+        "type": "object",
+        "properties": {
+          "session": {
+            "$ref": "#/components/schemas/ISdkCustomerSession"
+          },
+          "sessionSecret": {
+            "type": "string"
+          },
+          "rotated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "session",
+          "sessionSecret",
+          "rotated"
+        ]
+      },
+      "SessionInitInput": {
+        "type": "object",
+        "properties": {
+          "policyId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "policyRevision": {
+            "type": "number"
+          },
+          "options": {
+            "$ref": "#/components/schemas/CustomerAuthOptions"
+          }
+        },
+        "required": [
+          "policyId",
+          "policyRevision",
+          "options"
+        ]
+      },
+      "ISdkCustomerSession": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "sessionId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "phase": {
+            "$ref": "#/components/schemas/CustomerAuthSessionPhase"
+          },
+          "expiresAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "idleExpiresAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sdkAppId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/CustomerAuthPolicySnapshot"
+          },
+          "targetCartId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "principal": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "method": {
+                "enum": [
+                  "password",
+                  "otp"
+                ],
+                "type": "string"
+              },
+              "authenticatedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "method",
+              "authenticatedAt"
+            ]
+          }
+        },
+        "required": [
+          "tenantId",
+          "sessionId",
+          "phase",
+          "expiresAt",
+          "idleExpiresAt",
+          "policy",
+          "targetCartId",
+          "principal"
+        ]
+      },
+      "PasswordLoginInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 254
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "PasswordInput": {
+        "type": "object",
+        "properties": {
+          "newPassword": {
+            "type": "string",
+            "maxLength": 1024
+          },
+          "currentPassword": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "newPassword"
+        ]
+      },
+      "CustomerAuthChallengeResult": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "expiresInSeconds": {
+            "type": "number",
+            "enum": [
+              600
+            ]
+          },
+          "resendAfterSeconds": {
+            "type": "number",
+            "enum": [
+              60
+            ]
+          }
+        },
+        "required": [
+          "challengeId",
+          "expiresInSeconds",
+          "resendAfterSeconds"
+        ]
+      },
+      "ChallengeInput": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ChallengeInput_login_register"
+          },
+          {
+            "$ref": "#/components/schemas/ChallengeInput_password-set"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "purpose",
+          "mapping": {
+            "login": "#/components/schemas/ChallengeInput_login_register",
+            "register": "#/components/schemas/ChallengeInput_login_register",
+            "password-set": "#/components/schemas/ChallengeInput_password-set"
+          }
+        }
+      },
+      "ISdkChallengeVerification": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "enum": [
+              "login",
+              "register",
+              "password-set"
+            ],
+            "type": "string"
+          },
+          "session": {
+            "$ref": "#/components/schemas/ISdkCustomerSessionGrant"
+          },
+          "proof": {
+            "type": "string"
+          },
+          "expiresInSeconds": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "purpose"
+        ]
+      },
+      "ChallengeVerifyInput": {
+        "type": "object",
+        "properties": {
+          "challengeId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^[0-9]{8}$"
+          },
+          "purpose": {
+            "enum": [
+              "login",
+              "register",
+              "password-set"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "challengeId",
+          "code",
+          "purpose"
+        ]
+      },
+      "RegistrationInput": {
+        "type": "object",
+        "properties": {
+          "proof": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 512
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        },
+        "required": [
+          "proof",
+          "name"
+        ]
+      },
+      "RecoveryInput": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 254
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "ExchangeInput": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 512
+          },
+          "purpose": {
+            "enum": [
+              "enrollment",
+              "recovery",
+              "login-email"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "purpose"
+        ]
+      },
+      "InvitationInput": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "maxLength": 1024
+          }
+        }
+      },
+      "ISdkMeResult": {
+        "type": "object",
+        "properties": {
+          "appUserId": {
+            "type": "string"
+          },
+          "crmContactId": {
+            "type": "string"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/PickCrmContactEntity"
+          }
+        },
+        "required": [
+          "appUserId",
+          "crmContactId",
+          "contact"
+        ]
+      },
+      "ICmsUploadCreateResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "uploadInfo": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "headers": {
+                "$ref": "#/components/schemas/Record_2"
+              }
+            },
+            "required": [
+              "url",
+              "headers"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "uploadInfo"
+        ]
+      },
+      "ISdkUploadRequest": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string"
+          },
+          "size": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "contentType",
+          "size"
+        ]
+      },
+      "ICmsMediaUrlResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "ready",
+              "processing",
+              "failed"
+            ],
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "ISdkV1List": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ISdkV1Entry"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "contextVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "contextVersion"
+        ]
+      },
+      "ISdkV1Entry": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/ISdkV1Meta"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Record"
+          }
+        },
+        "required": [
+          "meta",
+          "data"
+        ]
+      },
+      "ISdkPublicMediaV1Result": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ISdkPublicMediaV1Item"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "ISdkV1Sync": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ISdkV1Entry"
+            }
+          },
+          "nextCursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "contextVersion": {
+            "type": "string"
+          },
+          "deletedIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "syncUntil": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor",
+          "contextVersion",
+          "deletedIds",
+          "syncUntil"
+        ]
+      },
+      "ISdkOwnedV1Create": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Record"
+          },
+          "parentEntryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "slug": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sortOrder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ISdkOwnedV1Replace": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Record"
+          },
+          "clientDefinitionId": {
+            "type": "string"
+          },
+          "expectedWriteRevision": {
+            "type": "number"
+          },
+          "slug": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sortOrder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "data",
+          "clientDefinitionId",
+          "expectedWriteRevision"
+        ]
+      },
+      "Record": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "CustomerAuthPolicySnapshot": {
+        "type": "object",
+        "properties": {
+          "policyId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "policyRevision": {
+            "type": "number"
+          },
+          "options": {
+            "$ref": "#/components/schemas/CustomerAuthOptions"
+          },
+          "orderHistoryScope": {
+            "$ref": "#/components/schemas/CustomerAuthOrderHistoryScope"
+          },
+          "orderHistoryConfigRevision": {
+            "type": "number"
+          },
+          "digest": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "policyId",
+          "policyRevision",
+          "options",
+          "orderHistoryScope",
+          "orderHistoryConfigRevision",
+          "digest"
+        ]
+      },
+      "CustomerAuthOptions": {
+        "type": "object",
+        "properties": {
+          "passwordLogin": {
+            "type": "boolean"
+          },
+          "otpLogin": {
+            "type": "boolean"
+          },
+          "createAccount": {
+            "type": "boolean"
+          },
+          "createPassword": {
+            "type": "boolean"
+          },
+          "changePasswordWithCurrent": {
+            "type": "boolean"
+          },
+          "setPasswordWithoutCurrent": {
+            "type": "boolean"
+          },
+          "passwordRecovery": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "passwordLogin",
+          "otpLogin",
+          "createAccount",
+          "createPassword",
+          "changePasswordWithCurrent",
+          "setPasswordWithoutCurrent",
+          "passwordRecovery"
+        ]
+      },
+      "CustomerAuthSessionPhase": {
+        "enum": [
+          "anonymous",
+          "authenticated",
+          "enrollment",
+          "loginEmailVerification",
+          "recovery"
+        ],
+        "type": "string"
+      },
+      "ChallengeInput_login_register": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "enum": [
+              "login",
+              "register"
+            ],
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "purpose",
+          "email"
+        ]
+      },
+      "ChallengeInput_password-set": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "password-set"
+            ]
+          }
+        },
+        "required": [
+          "purpose"
+        ]
+      },
+      "PickCrmContactEntity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^(?:urn:uuid:)?[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$"
+          },
+          "displayName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "firstName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "lastName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "company": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "displayName",
+          "firstName",
+          "lastName",
+          "company"
+        ]
+      },
+      "Record_2": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": {
+          "type": "string"
+        }
+      },
+      "ISdkV1Meta": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "definitionId": {
+            "type": "string"
+          },
+          "activeDefinitionId": {
+            "type": "string"
+          },
+          "schemaDigest": {
+            "type": "string"
+          },
+          "contextVersion": {
+            "type": "string"
+          },
+          "writeRevision": {
+            "type": "number"
+          },
+          "parentEntryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "published"
+            ],
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "slug": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "publishedAt": {
+            "type": "string"
+          },
+          "sortOrder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "definitionId",
+          "activeDefinitionId",
+          "schemaDigest",
+          "contextVersion",
+          "writeRevision"
+        ]
+      },
+      "ISdkPublicMediaV1Item": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ISdkPublicMediaV1Item_ready"
+          },
+          {
+            "$ref": "#/components/schemas/ISdkPublicMediaV1Item_processing_failed_unavailable"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "status",
+          "mapping": {
+            "ready": "#/components/schemas/ISdkPublicMediaV1Item_ready",
+            "processing": "#/components/schemas/ISdkPublicMediaV1Item_processing_failed_unavailable",
+            "failed": "#/components/schemas/ISdkPublicMediaV1Item_processing_failed_unavailable",
+            "unavailable": "#/components/schemas/ISdkPublicMediaV1Item_processing_failed_unavailable"
+          }
+        }
+      },
+      "CustomerAuthOrderHistoryScope": {
+        "enum": [
+          "ecomm",
+          "all"
+        ],
+        "type": "string"
+      },
+      "ISdkPublicMediaV1Item_ready": {
+        "type": "object",
+        "properties": {
+          "uploadId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready"
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "imageVariant",
+              "thumbnail",
+              "video",
+              "poster"
+            ],
+            "type": "string"
+          },
+          "profile": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "uploadId",
+          "status",
+          "url",
+          "expiresAt",
+          "kind",
+          "profile",
+          "contentType"
+        ]
+      },
+      "ISdkPublicMediaV1Item_processing_failed_unavailable": {
+        "type": "object",
+        "properties": {
+          "uploadId": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "processing",
+              "failed",
+              "unavailable"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "uploadId",
+          "status"
+        ]
+      }
+    }
+  }
+}
